@@ -1,6 +1,9 @@
 defmodule CesarCypher do
   def main() do
     IO.puts "Give me your file name"
+    IO.read(:line) 
+    |> String.trim()
+    |> cesar_cypher()
   end
 
   def main(name) do
@@ -8,17 +11,19 @@ defmodule CesarCypher do
     |> cesar_cypher()
   end
 
-  @spec read_cypher(binary()) :: :ok | binary()
-  def read_cypher(name) when is_bitstring(name) do
+  @spec read_cypher!(binary()) :: binary()
+  def read_cypher!(name) when is_binary(name) do
     case File.read(name) do
       {:ok, cypher} -> cypher
-      _ -> raise "Wrong file name"
+      {:error, :enoent} -> raise "Wrong file name #{name}"
     end
   end
 
+  @spec cesar_cypher(binary()) :: binary()
   def cesar_cypher(text) do
     text
-    |> to_charlist
+    |> to_charlist()
     |> Enum.map(fn x -> x + 1 end)
+    |> to_string()
   end
 end
