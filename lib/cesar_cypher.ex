@@ -12,7 +12,7 @@ defmodule CesarCypher do
   def read_cypher(name) when is_bitstring(name) do
     case File.read(name) do
       {:ok, cypher} -> cypher
-      {:error, :enoent} -> raise "Wrong file name"
+      _ -> raise "Wrong file name"
     end
   end
 
